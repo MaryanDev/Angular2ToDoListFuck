@@ -45,6 +45,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -84,9 +92,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\jquery.modal.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\libs\jquery.modal.js" />
     <Content Include="system.config.js" />
     <Content Include="views\index.html" />
+    <Content Include="views\templates\addTask.html" />
+    <Content Include="views\templates\taskDetails.html" />
+    <Content Include="views\templates\tasksList.html" />
     <Content Include="views\templates\toDo.html" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -96,8 +109,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DB\TasksListContext.cs" />
+    <Compile Include="Models\DB\TasksListDbInitialyzer.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\TaskService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -114,7 +130,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="app\addTask.component.ts" />
     <TypeScriptCompile Include="app\models\task.ts" />
+    <TypeScriptCompile Include="app\taskDetails.component.ts" />
+    <TypeScriptCompile Include="app\taskList.component.ts" />
     <TypeScriptCompile Include="app\toDoList.component.ts" />
     <TypeScriptCompile Include="app\app.module.ts" />
     <TypeScriptCompile Include="app\main.ts" />

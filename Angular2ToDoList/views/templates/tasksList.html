@@ -1,0 +1,32 @@
+﻿<table class="table table-responsive table-hover">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Text
+            </th>
+            <th>
+                Importance
+            </th>
+            <th>
+                Is done
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let task of tasks;let i = index;" >
+            <td><a href="#taskDetails" rel="modal:open" (click)="openModal(task)">{{task.Text}}</a></td>
+            <td>{{task.Importance}}</td>
+            <td>{{task.IsDone}}</td>
+            <td>{{task.DateCreated}}</td>
+            <td>{{task.EndDate}}</td>
+            <td><span class="glyphicon glyphicon-edit"></span></td>
+        </tr>
+    </tbody>
+</table>
+<div id="taskDetails" style="display:none;">
+    <task-details [taskToDisplay]="taskToDisplay"></task-details>
+</div>
+

@@ -1,4 +1,5 @@
 ﻿using Angular2ToDoList.Models;
+using Angular2ToDoList.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,55 +11,37 @@ namespace Angular2ToDoList.Controllers
 {
     public class TasksController : ApiController
     {
-        static List<Task> tasks = new List<Task>
-            {
-                new Task
-                {
-                    Id = 1,
-                    Text = "Learn Angular2",
-                    Importance = Importances.VeryHigh,
-                    IsDone = false
-                },
-                new Task
-                {
-                    Id = 2,
-                    Text = "Earn a lot of money",
-                    Importance = Importances.High,
-                    IsDone = false
-                },
-                new Task
-                {
-                    Id = 3,
-                    Text = "Find a job",
-                    Importance = Importances.VeryHigh,
-                    IsDone = true
-                }
-            };
+        private TaskService taskService;
+
+        public TasksController()
+        {
+            this.taskService = new TaskService();
+        }
 
         public HttpResponseMessage GetTasks()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, tasks);
+            return Request.CreateResponse(HttpStatusCode.OK, taskService.Get());
         }
         [HttpPost]
         public HttpResponseMessage AddTask([FromBody]Task taskToAdd)
         {
-            tasks.Add(taskToAdd);
+            taskService.AddTask(taskToAdd);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [HttpPut]
         public HttpResponseMessage EditTask([FromBody] Task taskToEdit)
         {
-            var index = tasks.FindIndex(t => t.Id == taskToEdit.Id);
-            tasks[index] = taskToEdit;
+            int x;
+            taskService.UpdateTask(taskToEdit);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
         [HttpDelete]
         public HttpResponseMessage DeleteTask([FromBody]int id)
         {
-            var taskToDelete = tasks.Where(t => t.Id == id).FirstOrDefault();
-            tasks.Remove(taskToDelete);
+            var taskToDelete = taskService.GetSingle(t => t.Id == id);
+            taskService.DeleteTask(taskToDelete);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 

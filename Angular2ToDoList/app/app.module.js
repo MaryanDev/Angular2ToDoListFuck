@@ -12,14 +12,21 @@ const core_1 = require('@angular/core');
 const platform_browser_1 = require('@angular/platform-browser');
 const http_1 = require('@angular/http');
 const forms_1 = require('@angular/forms');
+const taskList_component_1 = require('./taskList.component');
 const toDoList_component_1 = require('./toDoList.component');
+const addTask_component_1 = require('./addTask.component');
+const taskDetails_component_1 = require('./taskDetails.component');
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     core_1.NgModule({
-        imports: [platform_browser_1.BrowserModule, http_1.HttpModule,
-            http_1.JsonpModule, forms_1.FormsModule],
-        declarations: [toDoList_component_1.ToDoListComponent],
+        imports: [
+            platform_browser_1.BrowserModule,
+            http_1.HttpModule,
+            http_1.JsonpModule,
+            forms_1.FormsModule
+        ],
+        declarations: [toDoList_component_1.ToDoListComponent, taskList_component_1.TasksListComponent, addTask_component_1.AddTaskComponent, taskDetails_component_1.TaskDetailsComponent],
         bootstrap: [toDoList_component_1.ToDoListComponent]
     }), 
     __metadata('design:paramtypes', [])

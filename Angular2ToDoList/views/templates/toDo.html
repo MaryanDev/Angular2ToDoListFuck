@@ -1,64 +1,9 @@
 ﻿<h2 class="text-center">Your todo list</h2>
 <div class="container ">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <form class="form-inline" (ngSubmit)="addTask()">
-                <div class="form-group">
-                    <input type="text" required [(ngModel)]="taskToAdd.Text" name="text" class="form-control" placeholder="text" />
-                </div>
-                <div class="form-group">
-                    <select class="form-control" required [(ngModel)]="taskToAdd.Importance" name="importance">
-                        <option>Very High</option>
-                        <option>High</option>
-                        <option>Intermediate</option>
-                        <option>Low</option>
-                        <option>Very low</option>
-                    </select>
-                </div>
-                <input type="submit" value="Add" class="btn btn-success" />
-
-            </form>
-            <table class="table table-responsive table-hover">
-                <thead>
-                    <tr>
-                        <th>
-                            Id
-                        </th>
-                        <th>
-                            Text
-                        </th>
-                        <th>
-                            Importance
-                        </th>
-                        <th>
-                            Is done
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let task of tasks;let i = index;" >
-                        <td>{{task.Id}}</td>
-                        <td *ngIf="!task.IsEditable">{{task.Text}}</td>
-                        <td *ngIf="!task.IsEditable">{{task.Importance}}</td>
-                        <td *ngIf="!task.IsEditable">{{task.IsDone}}</td>
-                        <td *ngIf="!task.IsEditable"><span class="glyphicon glyphicon-edit" (click)="enableEditing(i)"></span></td>
-
-                        <td *ngIf="task.IsEditable"><input type="text" [(ngModel)]="task.Text" class="input-sm"/></td>
-                        <td *ngIf="task.IsEditable">
-                            <select [(ngModel)]="task.Importance" class="input-sm">
-                                <option value="VeryHigh">Very High</option>
-                                <option value="High">High</option>
-                                <option value="Intermediate">Intermediate</option>
-                                <option value="Low">Low</option>
-                                <option value="VeryLow">Very low</option>
-                            </select>
-                        </td>
-                        <td *ngIf="task.IsEditable"><input type="checkbox" class="checkbox-inline" [(ngModel)]="task.IsDone"/></td>
-                        <td *ngIf="task.IsEditable"><span class="glyphicon glyphicon-ok-sign" (click)="editTask(task)"></span></td>
-                        <td *ngIf="task.IsEditable"><span class="glyphicon glyphicon-remove" (click)="enableEditing(i)"></span></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="col-md-8 col-md-offset-2">
+            <add-task (onAddTask)="addTask($event)"></add-task>
+            <tasks-list [tasks]="tasks"></tasks-list>
         </div>
     </div>
 </div>
