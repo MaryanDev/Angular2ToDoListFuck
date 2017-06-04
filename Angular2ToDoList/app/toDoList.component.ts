@@ -1,13 +1,17 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { Task } from './models/task';
+import { Pagination } from './models/pagination';
 import { AddTaskComponent } from './addTask.component';
 import { TasksListComponent } from './taskList.component';
+import { PaginationComponent } from './pagination.component';
+
+import { TasksAjaxService } from './services/tasksAjaxService';
 
 @Component({
     selector: 'toDoList',
@@ -16,18 +20,23 @@ import { TasksListComponent } from './taskList.component';
 export class ToDoListComponent implements OnInit {
     tasks: Task[];
     importances: string[];
+    pagination: Pagination;
 
-    constructor(private http: Http) {
-        this.http.get('/api/tasks')
+    constructor(private http: Http, private tasksAjaxService: TasksAjaxService) {
+        this.pagination = new Pagination();
+        this.tasksAjaxService.getTasks(1)
             .subscribe(
-            tasks => this.tasks = tasks.json(),
-            error => console.log(error)
+                response => this.initData(response),
+                error => console.log(error)
             );
 
-        this.http.get('/api/tasks/getImportances')
+        this.tasksAjaxService.getImportances()
             .subscribe(
-            importances => { this.importances = importances.json(); console.log(this.importances); },
-            error => console.log(error)
+                importances => {
+                    this.importances = importances.json();
+                    console.log(this.importances);
+                },
+                error => console.log(error)
             );
     }
 
@@ -35,41 +44,50 @@ export class ToDoListComponent implements OnInit {
 
     }
 
-    addTask(taskToAdd: Task) {
-        let headers = new Headers();
-        headers.append("Content-type", "application/json");
-        this.http.post('/api/tasks', JSON.stringify(taskToAdd), { headers: headers }).subscribe(() => {
-            this.http.get('/api/tasks')
-                .subscribe(
-                tasks => this.tasks = tasks.json(),
+    getNextPage(page: number) {
+        this.tasksAjaxService.getTasks(page)
+            .subscribe(
+                response => this.initData(response),
                 error => console.log(error)
+            );
+    }
+
+    addTask(taskToAdd: Task) {
+
+        this.tasksAjaxService.addTask(taskToAdd).subscribe(() => {
+            this.tasksAjaxService.getTasks(this.pagination.currentPage)
+                .subscribe(
+                    response => this.initData(response),
+                    error => console.log(error)
                 );
         }, error => console.log(error));
     }
 
     editTask(taskToEdit: Task) {
-        let headers = new Headers();
-        headers.append("Content-type", "application/json");
-        this.http.put('/api/tasks', JSON.stringify(taskToEdit), {
-            headers: headers
-        }).subscribe(() => console.log('successfully edited'), error => console.log(error));
-
-        //this.tasks[this.tasks.indexOf(taskToEdit)].IsEditable = false;
+        this.tasksAjaxService.editTask(taskToEdit)
+            .subscribe(
+                () => console.log('successfully edited'),
+                error => console.log(error)
+            );
     }
 
     deleteTask(Id: number) {
         if (confirm("Are you sure want ot delete this task?")) {
-            let headers = new Headers();
-            headers.append("Content-type", "application/json");
-
-            this.http.delete('/api/tasks', new RequestOptions({ headers: headers, body: Id }))
+            this.tasksAjaxService.deleteTask(Id)
                 .subscribe(() => {
-                    this.http.get('/api/tasks')
+                    this.tasksAjaxService.getTasks(this.pagination.currentPage)
                         .subscribe(
-                        tasks => this.tasks = tasks.json(),
-                        error => console.log(error)
+                            response => this.initData(response),
+                            error => console.log(error)
                         );
                 }, error => console.log(error))
         }
+    }
+
+    private initData(response: Response) {
+        let rawResponse = response.json();
+        this.tasks = rawResponse.tasks;
+        this.pagination.pagesArray = new Array(rawResponse.countOfPages);
+        this.pagination.currentPage = rawResponse.currentPage;
     }
 }

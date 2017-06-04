@@ -12,42 +12,50 @@ const core_1 = require("@angular/core");
 const http_1 = require("@angular/http");
 require("rxjs/add/operator/catch");
 require("rxjs/add/operator/map");
+const pagination_1 = require("./models/pagination");
+const tasksAjaxService_1 = require("./services/tasksAjaxService");
 let ToDoListComponent = class ToDoListComponent {
-    constructor(http) {
+    constructor(http, tasksAjaxService) {
         this.http = http;
-        this.http.get('/api/tasks')
-            .subscribe(tasks => this.tasks = tasks.json(), error => console.log(error));
-        this.http.get('/api/tasks/getImportances')
-            .subscribe(importances => { this.importances = importances.json(); console.log(this.importances); }, error => console.log(error));
+        this.tasksAjaxService = tasksAjaxService;
+        this.pagination = new pagination_1.Pagination();
+        this.tasksAjaxService.getTasks(1)
+            .subscribe(response => this.initData(response), error => console.log(error));
+        this.tasksAjaxService.getImportances()
+            .subscribe(importances => {
+            this.importances = importances.json();
+            console.log(this.importances);
+        }, error => console.log(error));
     }
     ngOnInit() {
     }
+    getNextPage(page) {
+        this.tasksAjaxService.getTasks(page)
+            .subscribe(response => this.initData(response), error => console.log(error));
+    }
     addTask(taskToAdd) {
-        let headers = new http_1.Headers();
-        headers.append("Content-type", "application/json");
-        this.http.post('/api/tasks', JSON.stringify(taskToAdd), { headers: headers }).subscribe(() => {
-            this.http.get('/api/tasks')
-                .subscribe(tasks => this.tasks = tasks.json(), error => console.log(error));
+        this.tasksAjaxService.addTask(taskToAdd).subscribe(() => {
+            this.tasksAjaxService.getTasks(this.pagination.currentPage)
+                .subscribe(response => this.initData(response), error => console.log(error));
         }, error => console.log(error));
     }
     editTask(taskToEdit) {
-        let headers = new http_1.Headers();
-        headers.append("Content-type", "application/json");
-        this.http.put('/api/tasks', JSON.stringify(taskToEdit), {
-            headers: headers
-        }).subscribe(() => console.log('successfully edited'), error => console.log(error));
-        //this.tasks[this.tasks.indexOf(taskToEdit)].IsEditable = false;
+        this.tasksAjaxService.editTask(taskToEdit).subscribe(() => console.log('successfully edited'), error => console.log(error));
     }
     deleteTask(Id) {
         if (confirm("Are you sure want ot delete this task?")) {
-            let headers = new http_1.Headers();
-            headers.append("Content-type", "application/json");
-            this.http.delete('/api/tasks', new http_1.RequestOptions({ headers: headers, body: Id }))
+            this.tasksAjaxService.deleteTask(Id)
                 .subscribe(() => {
-                this.http.get('/api/tasks')
-                    .subscribe(tasks => this.tasks = tasks.json(), error => console.log(error));
+                this.tasksAjaxService.getTasks(this.pagination.currentPage)
+                    .subscribe(response => this.initData(response), error => console.log(error));
             }, error => console.log(error));
         }
+    }
+    initData(response) {
+        let rawResponse = response.json();
+        this.tasks = rawResponse.tasks;
+        this.pagination.pagesArray = new Array(rawResponse.countOfPages);
+        this.pagination.currentPage = rawResponse.currentPage;
     }
 };
 ToDoListComponent = __decorate([
@@ -55,7 +63,7 @@ ToDoListComponent = __decorate([
         selector: 'toDoList',
         templateUrl: '/views/templates/toDo.html'
     }),
-    __metadata("design:paramtypes", [http_1.Http])
+    __metadata("design:paramtypes", [http_1.Http, tasksAjaxService_1.TasksAjaxService])
 ], ToDoListComponent);
 exports.ToDoListComponent = ToDoListComponent;
 //# sourceMappingURL=toDoList.component.js.map

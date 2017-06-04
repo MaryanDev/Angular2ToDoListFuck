@@ -7,6 +7,9 @@ import { TasksListComponent } from './taskList.component';
 import { ToDoListComponent }  from './toDoList.component';
 import { AddTaskComponent } from './addTask.component';
 import { TaskDetailsComponent } from './taskDetails.component';
+import { PaginationComponent } from './pagination.component';
+
+import { TasksAjaxService } from './services/tasksAjaxService';
 
 @NgModule({
     imports: [
@@ -15,7 +18,8 @@ import { TaskDetailsComponent } from './taskDetails.component';
         JsonpModule,
         FormsModule
     ],
-    declarations: [ToDoListComponent, TasksListComponent, AddTaskComponent, TaskDetailsComponent],
+    providers: [TasksAjaxService],
+    declarations: [ToDoListComponent, TasksListComponent, AddTaskComponent, TaskDetailsComponent, PaginationComponent],
     bootstrap: [ToDoListComponent]
 })
 export class AppModule { }

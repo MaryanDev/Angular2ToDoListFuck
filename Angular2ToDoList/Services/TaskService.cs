@@ -9,14 +9,30 @@ namespace Angular2ToDoList.Services
 {
     public class TaskService
     {
-        public List<Task> Get(Func<Task, bool> criteria = null)
+        private int pageSize = 3;
+
+        public List<Task> Get(int page, Func<Task, bool> criteria = null)
         {
             List<Task> result;
             using(var context = new TasksListContext())
             {
-                result = criteria != null ? context.Tasks.Where(criteria).ToList() : context.Tasks.ToList();
+                result = (criteria != null ? context.Tasks.Where(criteria): context.Tasks)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
             }
 
+            return result;
+        }
+
+        public int GetPagesCount()
+        {
+            int result = 0;
+            using(var context = new TasksListContext())
+            {
+                var tasksCount = context.Tasks.Count();
+                result = tasksCount % pageSize != 0 ? (tasksCount / pageSize) + 1 : tasksCount / pageSize;
+            }
             return result;
         }
 

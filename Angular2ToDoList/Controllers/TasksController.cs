@@ -12,16 +12,20 @@ namespace Angular2ToDoList.Controllers
     public class TasksController : ApiController
     {
         private TaskService taskService;
+        private int pageSize = 3;
 
         public TasksController()
         {
             this.taskService = new TaskService();
         }
 
-        public HttpResponseMessage GetTasks()
+        public HttpResponseMessage GetTasks(int page = 1)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, taskService.Get());
+            var tasks = taskService.Get(page);
+            var countOfPages = taskService.GetPagesCount();
+            return Request.CreateResponse(HttpStatusCode.OK, new { tasks, countOfPages, currentPage = page });
         }
+
         [HttpPost]
         public HttpResponseMessage AddTask([FromBody]Task taskToAdd)
         {

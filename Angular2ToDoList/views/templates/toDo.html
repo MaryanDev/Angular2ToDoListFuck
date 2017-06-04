@@ -4,6 +4,7 @@
         <div>
             <add-task [importances]="importances" (onAddTask)="addTask($event)"></add-task>
             <tasks-list [tasks]="tasks" (onDeleteTask)="deleteTask($event)"></tasks-list>
+            <pagination [pagination]="pagination" (onGetNextPage)="getNextPage($event)"></pagination>
         </div>
     </div>
 </div>

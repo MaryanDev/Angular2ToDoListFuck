@@ -13,6 +13,8 @@ const taskList_component_1 = require("./taskList.component");
 const toDoList_component_1 = require("./toDoList.component");
 const addTask_component_1 = require("./addTask.component");
 const taskDetails_component_1 = require("./taskDetails.component");
+const pagination_component_1 = require("./pagination.component");
+const tasksAjaxService_1 = require("./services/tasksAjaxService");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -23,7 +25,8 @@ AppModule = __decorate([
             http_1.JsonpModule,
             forms_1.FormsModule
         ],
-        declarations: [toDoList_component_1.ToDoListComponent, taskList_component_1.TasksListComponent, addTask_component_1.AddTaskComponent, taskDetails_component_1.TaskDetailsComponent],
+        providers: [tasksAjaxService_1.TasksAjaxService],
+        declarations: [toDoList_component_1.ToDoListComponent, taskList_component_1.TasksListComponent, addTask_component_1.AddTaskComponent, taskDetails_component_1.TaskDetailsComponent, pagination_component_1.PaginationComponent],
         bootstrap: [toDoList_component_1.ToDoListComponent]
     })
 ], AppModule);
