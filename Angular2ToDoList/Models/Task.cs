@@ -5,6 +5,7 @@ using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Angular2ToDoList.Models
 {
@@ -16,8 +17,10 @@ namespace Angular2ToDoList.Models
 
         public string Text { get; set; }
 
+        [Column(TypeName = "date")]
         public DateTime DateCreated { get; set; }
 
+        [Column(TypeName = "date")]
         public DateTime EndDate { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]

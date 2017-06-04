@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require('@angular/core');
-const task_1 = require('./models/task');
+const core_1 = require("@angular/core");
+const task_1 = require("./models/task");
 let AddTaskComponent = class AddTaskComponent {
     constructor() {
         this.onAddTask = new core_1.EventEmitter();
@@ -20,15 +20,19 @@ let AddTaskComponent = class AddTaskComponent {
     }
 };
 __decorate([
-    core_1.Output(), 
-    __metadata('design:type', Object)
+    core_1.Input(),
+    __metadata("design:type", Array)
+], AddTaskComponent.prototype, "importances", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
 ], AddTaskComponent.prototype, "onAddTask", void 0);
 AddTaskComponent = __decorate([
     core_1.Component({
         selector: 'add-task',
         templateUrl: '/views/templates/addTask.html'
-    }), 
-    __metadata('design:paramtypes', [])
+    }),
+    __metadata("design:paramtypes", [])
 ], AddTaskComponent);
 exports.AddTaskComponent = AddTaskComponent;
 //# sourceMappingURL=addTask.component.js.map

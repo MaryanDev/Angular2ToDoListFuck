@@ -1,9 +1,19 @@
-﻿<table class="table table-responsive table-hover">
+﻿<style>
+    .deleteVisible {
+        display: block;
+    }
+
+        .deleteVisible:hover {
+            cursor: pointer;
+        }
+
+    .deleteUnvisible {
+        display: none;
+    }
+</style>
+<table class="table table-responsive table-hover">
     <thead>
         <tr>
-            <th>
-                Id
-            </th>
             <th>
                 Text
             </th>
@@ -13,16 +23,26 @@
             <th>
                 Is done
             </th>
+            <th>
+                Date created
+            </th>
+            <th>
+                End Date
+            </th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let task of tasks;let i = index;" >
+        <tr class="text-center"><td colspan="6"><a href="#addTask" rel="modal:open"><span class="glyphicon glyphicon-plus-sign"></span></a></td></tr>
+        <tr *ngFor="let task of tasks;let i = index;" (mouseover)="showDeleteSign(i, true)" (mouseleave)="showDeleteSign(i, false)">
             <td><a href="#taskDetails" rel="modal:open" (click)="openModal(task)">{{task.Text}}</a></td>
             <td>{{task.Importance}}</td>
             <td>{{task.IsDone}}</td>
-            <td>{{task.DateCreated}}</td>
-            <td>{{task.EndDate}}</td>
-            <td><span class="glyphicon glyphicon-edit"></span></td>
+            <td>{{task.DateCreated | date}}</td>
+            <td>{{task.EndDate | date}}</td>
+            <td>
+                <span [ngClass]="{ 'deleteVisible': task.isDeleteSignVisible, 'deleteUnvisible' : !task.isDeleteSignVisible }"
+                      class="glyphicon glyphicon-remove-sign text-danger" (click)="deleteTask(task.Id)"></span>
+            </td>
         </tr>
     </tbody>
 </table>

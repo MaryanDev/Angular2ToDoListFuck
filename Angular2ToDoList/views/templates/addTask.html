@@ -1,15 +1,20 @@
-﻿<form class="form-inline" (ngSubmit)="addTask()">
-    <div class="form-group">
-        <input type="text" required [(ngModel)]="taskToAdd.Text" name="text" class="form-control" placeholder="text" />
-    </div>
-    <div class="form-group">
-        <select class="form-control" required [(ngModel)]="taskToAdd.Importance" name="importance">
-            <option>Very High</option>
-            <option>High</option>
-            <option>Intermediate</option>
-            <option>Low</option>
-            <option>Very low</option>
-        </select>
-    </div>
-    <input type="submit" value="Add" class="btn btn-success" />
-</form>
+﻿<div id="addTask" style="display:none;">
+    <form (ngSubmit)="addTask()">
+        <div class="form-group">
+            <input type="text" required [(ngModel)]="taskToAdd.Title" name="title" class="form-control input-lg" placeholder="task title" />
+        </div>
+        <div class="form-group">
+            <textarea class="form-control input-lg" required [(ngModel)]="taskToAdd.Text" name="text" placeholder="task description" ></textarea>
+        </div>
+        <div class="form-group">
+            <select class="form-control input-lg" required [(ngModel)]="taskToAdd.Importance" name="importance">
+                <option *ngFor="let importance of importances">{{importance}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="date" class="form-control input-lg" required placeholder="task end date" [(ngModel)]="taskToAdd.EndDate" name="dateCreated" />
+        </div>
+
+        <input type="submit" value="Add" class="btn btn-lg btn-success" />
+    </form>
+</div>

@@ -1,9 +1,9 @@
 ﻿<h2 class="text-center">Your todo list</h2>
-<div class="container ">
+<div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <add-task (onAddTask)="addTask($event)"></add-task>
-            <tasks-list [tasks]="tasks"></tasks-list>
+        <div>
+            <add-task [importances]="importances" (onAddTask)="addTask($event)"></add-task>
+            <tasks-list [tasks]="tasks" (onDeleteTask)="deleteTask($event)"></tasks-list>
         </div>
     </div>
 </div>

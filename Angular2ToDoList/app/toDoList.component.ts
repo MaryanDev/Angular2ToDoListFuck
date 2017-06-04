@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Injectable }              from '@angular/core';
-import { Http, Response, Headers }          from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -15,6 +15,7 @@ import { TasksListComponent } from './taskList.component';
 })
 export class ToDoListComponent implements OnInit {
     tasks: Task[];
+    importances: string[];
 
     constructor(private http: Http) {
         this.http.get('/api/tasks')
@@ -22,10 +23,16 @@ export class ToDoListComponent implements OnInit {
             tasks => this.tasks = tasks.json(),
             error => console.log(error)
             );
+
+        this.http.get('/api/tasks/getImportances')
+            .subscribe(
+            importances => { this.importances = importances.json(); console.log(this.importances); },
+            error => console.log(error)
+            );
     }
 
     ngOnInit() {
-        
+
     }
 
     addTask(taskToAdd: Task) {
@@ -50,5 +57,19 @@ export class ToDoListComponent implements OnInit {
         //this.tasks[this.tasks.indexOf(taskToEdit)].IsEditable = false;
     }
 
- 
+    deleteTask(Id: number) {
+        if (confirm("Are you sure want ot delete this task?")) {
+            let headers = new Headers();
+            headers.append("Content-type", "application/json");
+
+            this.http.delete('/api/tasks', new RequestOptions({ headers: headers, body: Id }))
+                .subscribe(() => {
+                    this.http.get('/api/tasks')
+                        .subscribe(
+                        tasks => this.tasks = tasks.json(),
+                        error => console.log(error)
+                        );
+                }, error => console.log(error))
+        }
+    }
 }

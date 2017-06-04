@@ -18,8 +18,8 @@ namespace Angular2ToDoList.Models.DB
                     Text = "Find out some way to get money",
                     Importance = Importances.High,
                     IsDone = false,
-                    DateCreated = DateTime.Now,
-                    EndDate = DateTime.Now.AddDays(35),
+                    DateCreated = Convert.ToDateTime(DateTime.Now.ToShortDateString()),
+                    EndDate = Convert.ToDateTime(DateTime.Now.AddDays(35).ToShortDateString()),
                 },
                 new Task
                 {
@@ -27,8 +27,8 @@ namespace Angular2ToDoList.Models.DB
                     Text = "Investigate all main features of angular 2 front end framework",
                     Importance = Importances.VeryHigh,
                     IsDone = false,
-                    DateCreated = DateTime.Now,
-                    EndDate = DateTime.Now.AddDays(7),
+                    DateCreated = Convert.ToDateTime(DateTime.Now.ToShortDateString()),
+                    EndDate = Convert.ToDateTime(DateTime.Now.AddDays(7).ToShortDateString()),
                 }
             };
 

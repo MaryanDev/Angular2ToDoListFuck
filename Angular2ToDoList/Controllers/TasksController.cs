@@ -32,7 +32,6 @@ namespace Angular2ToDoList.Controllers
         [HttpPut]
         public HttpResponseMessage EditTask([FromBody] Task taskToEdit)
         {
-            int x;
             taskService.UpdateTask(taskToEdit);
 
             return Request.CreateResponse(HttpStatusCode.OK);
@@ -40,11 +39,16 @@ namespace Angular2ToDoList.Controllers
         [HttpDelete]
         public HttpResponseMessage DeleteTask([FromBody]int id)
         {
-            var taskToDelete = taskService.GetSingle(t => t.Id == id);
-            taskService.DeleteTask(taskToDelete);
+            taskService.DeleteTask(id);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-
+        [HttpGet]
+        [Route("api/tasks/getImportances")]
+        public HttpResponseMessage GetImportances()
+        {
+            var importances = Enum.GetNames(typeof(Importances));
+            return Request.CreateResponse(HttpStatusCode.OK, importances);
+        }
     }
 }

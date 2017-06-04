@@ -6,4 +6,6 @@
     Text: string;
     IsDone: boolean;
     Importance: string;
+
+    isDeleteSignVisible: boolean;
 }

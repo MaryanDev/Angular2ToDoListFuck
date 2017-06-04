@@ -32,6 +32,7 @@ namespace Angular2ToDoList.Services
         }
         public void AddTask(Task task)
         {
+            task.DateCreated = DateTime.Now;
             using(var context = new TasksListContext())
             {
                 context.Tasks.Add(task);
@@ -45,14 +46,19 @@ namespace Angular2ToDoList.Services
             {
                 context.Set<Task>().Attach(task);
                 context.Entry(task).State = System.Data.Entity.EntityState.Modified;
+
+                context.SaveChanges();
             }
         }
 
-        public void DeleteTask(Task task)
+        public void DeleteTask(int id)
         {
             using (var context = new TasksListContext())
             {
-                context.Set<Task>().Remove(task);
+                var taskToDelete = context.Tasks.Where(t => t.Id == id).FirstOrDefault();
+                context.Set<Task>().Remove(taskToDelete);
+
+                context.SaveChanges();
             }
         }
     }

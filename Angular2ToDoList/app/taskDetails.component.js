@@ -8,20 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require('@angular/core');
-const task_1 = require('./models/task');
+const core_1 = require("@angular/core");
+const task_1 = require("./models/task");
 let TaskDetailsComponent = class TaskDetailsComponent {
 };
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', task_1.Task)
+    core_1.Input(),
+    __metadata("design:type", task_1.Task)
 ], TaskDetailsComponent.prototype, "taskToDisplay", void 0);
 TaskDetailsComponent = __decorate([
     core_1.Component({
         selector: 'task-details',
         templateUrl: '/views/templates/taskDetails.html'
-    }), 
-    __metadata('design:paramtypes', [])
+    })
 ], TaskDetailsComponent);
 exports.TaskDetailsComponent = TaskDetailsComponent;
 //# sourceMappingURL=taskDetails.component.js.map

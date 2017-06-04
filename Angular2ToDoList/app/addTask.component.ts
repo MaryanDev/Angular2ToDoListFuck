@@ -7,6 +7,7 @@ import { Task } from './models/task';
     templateUrl: '/views/templates/addTask.html'
 })
 export class AddTaskComponent {
+    @Input() importances: string[];
     public taskToAdd: Task;
     constructor() {
         this.taskToAdd = new Task();
@@ -15,5 +16,6 @@ export class AddTaskComponent {
     @Output() onAddTask = new EventEmitter<Task>();
     addTask() {
         this.onAddTask.emit(this.taskToAdd);
+        
     }
 }
